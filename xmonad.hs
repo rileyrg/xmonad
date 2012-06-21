@@ -121,6 +121,7 @@ scratchpads = [
      NS "yoono" "yoono.sh" (name =? "Yoono") defaultFloating ,
      NS "audacious" "audacious" (className =? "Audacious") defaultFloating ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
+     NS "opera" "opera" (className =? "Opera") nonFloating,
      NS "translate" "chromium-browser --app=http://translate.google.com/#" (name =? "Google Translate") nonFloating,
      NS "unison" "unison-gtk" (className =? "unison-gtk") nonFloating ,
      NS "htop" "xterm -name htop -e htop" (title =? "htop") 
@@ -212,6 +213,7 @@ myConfig = gnomeConfig {
            ,((modMask myConfig .|. shiftMask, xK_p),  namedScratchpadAction scratchpads "htop")
            ,((modMask myConfig .|. shiftMask, xK_m),  spawn "ssh hermes xterm -e htop")
            ,((modMask myConfig .|. shiftMask, xK_e),  namedScratchpadAction scratchpads "emacs")
+           ,((modMask myConfig .|. shiftMask, xK_o),  namedScratchpadAction scratchpads "opera")
            ,((modMask myConfig .|. shiftMask, xK_t), scratchpadSpawnActionCustom myToggleTerminal)
            ,((modMask myConfig .|. shiftMask, xK_d),  namedScratchpadAction scratchpads "evince")
            ,((modMask myConfig .|. shiftMask, xK_y),  namedScratchpadAction scratchpads "yoono")
