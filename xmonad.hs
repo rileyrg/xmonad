@@ -156,7 +156,8 @@ myKeys= [
              ,("M-S-<Delete>", kill)
              ,("M-C-l", spawn "xscreensaver-command -l")
              -- Quit xmonad
-             ,("M-C-q", spawn "confirmtoquit")
+             ,("M-C-q", spawn "confirmtoquit 0")
+             ,("M-C-d", spawn "confirmtoquit 1")
              ,("M-C-v", spawn "gnome-volume-control")
              ]
                 

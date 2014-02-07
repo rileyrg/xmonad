@@ -1,10 +1,22 @@
 #!/bin/bash
 # for xmonad quit
 # email:rileyrg@gmail.com
-if zenity --timeout=5 --question --title='Really logout of  your session?' --text='Logout';
+case "$1" in
+    0)  prog="pkill -u ${USER}"
+        text="Really logout?"
+        ;;
+    1)  prog="gksudo shutdown now"
+        text="Really shutdown?"
+        ;;
+    *)  zenity --warning --text "Whoops"
+        exit
+        ;;
+esac
+
+if zenity --timeout=5 --question --title"=Confirm" --text="${text}";
 then
     if zenity --timeout=5 --question --title="You're sure?" --text='Really Sure?';
     then
-         pkill -u ${USER};
+         exec ${prog}
     fi
 fi
