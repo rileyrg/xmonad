@@ -1,0 +1,2 @@
+#!/bin/sh
+sleep 0.2;scrot -d3 -q80 -s 'shot-%Y%m%d-%H.%M.%S.jpg' -e 'mv $f ~/tmp && eog ~/tmp/$f'

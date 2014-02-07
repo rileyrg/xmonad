@@ -79,7 +79,7 @@ scratchpads = [
      NS "evince" "evince" (className =? "evince") nonFloating ,
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
      NS "firefox" "firefox" (className =? "Firefox") nonFloating ,
-     NS "htop" "urxvt -name urxvt -title htop -e sh -c htop" (title =? "htop") nonFloating,
+     NS "htop" "urxvt -name htop -title htop -e htop" (title =? "htop") nonFloating,
      NS "intellij" "intellij" (className =?"jetbrains-idea-ce") nonFloating,
      NS "pcmanfm" "pcmanfm" (appName =?"pcmanfm") nonFloating,
      NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") nonFloating ,
@@ -89,15 +89,15 @@ scratchpads = [
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
 
-searchEngineMap method = mkKeymap (myConfig undefined) 
-                         [("g", method S.google)
-                         ,("h", method S.hoogle)
-                         ,("w", method S.wikipedia)
-                         ,("i", method S.imdb)
-                         ,("a", method S.amazon)
-                         ,("m", method S.maps)
-                         ,("y", method S.youtube)
-                         ,("h", method hayoo)
+smap  m = mkKeymap (myConfig undefined) 
+                         [("g", m S.google)
+                         ,("h", m S.hoogle)
+                         ,("w", m S.wikipedia)
+                         ,("i", m S.imdb)
+                         ,("a", m S.amazon)
+                         ,("m", m S.maps)
+                         ,("y", m S.youtube)
+                         ,("h", m hayoo)
                          ]
     where
       hayoo = S.searchEngine "Hayoo"  "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query="
@@ -105,7 +105,7 @@ searchEngineMap method = mkKeymap (myConfig undefined)
 myKeys :: [(String, X ())]
 myKeys= [
               ("<Print>", spawn "fullscreenshot")
-             ,("M-s", SM.submap $ searchEngineMap $ S.promptSearchBrowser greenXPConfig "firefox")
+             ,("M-s", SM.submap $ smap $ S.promptSearchBrowser greenXPConfig "firefox")
              ,("M-g",  S.promptSearchBrowser greenXPConfig "firefox" S.google)
              ,("M-<F1>", AL.launchApp defaultXPConfig "gnome-terminal -x info " )
              ,("M-S-2",namedScratchpadAction scratchpads "9patchresizer")
@@ -151,15 +151,10 @@ myKeys= [
              ,("M-C-f", withFocused float)
              ,("M-C-<Delete>", spawn "xkill")
              ,("M-S-<Delete>", kill)
-             ,("M-C-s", spawn "gksu poweroff")
-             ,("M-C-r", spawn "gksu reboot")
              ,("M-C-l", spawn "xscreensaver-command -l")
-             ,("M-C-q", spawn "kill -9 -1")
-             
              -- Quit xmonad
-             ,("M-S-q", io exitSuccess)
+             ,("M-C-q", spawn "confirmtoquit")
              ,("M-C-v", spawn "gnome-volume-control")
-             ,("M-C-o", spawn "pkill -u ${USER}")
              ]
                 
 myStartUpHook :: X ()

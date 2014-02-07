@@ -1,0 +1,4 @@
+#!/bin/bash
+if zenity --question --title='Really logout of  your session?' --text='Logout';
+   then pkill -u ${USER};
+fi
