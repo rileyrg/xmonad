@@ -57,8 +57,8 @@ myManageHook =  composeAll . concat $
                                ]
 
     where
-      myFloats        = ["gimmix","xvidcap", "Xvidcap", "recordMyDesktop","screensaver","pinentry-gtk-2","key-mon","xsane"]
-      myIgnores       = ["Gnome-panel","gworldclock","ddd", "bsh-Interpreter","Do","gnubiff","Audacious"]
+      myFloats        = ["xvidcap"]
+      myIgnores       = ["pinentry-x11","zenity","Audacious"]
 
 myLayout = 
     -- onWorkspace "2:TV"   (noBorders (fullscreenFull  Full )) $
@@ -116,6 +116,9 @@ myKeys= [
              ,("M-S-g",namedScratchpadAction scratchpads "gimp")
              ,("M-S-i",namedScratchpadAction scratchpads "intellij")
              ,("M-S-w",namedScratchpadAction scratchpads "wireshark")
+
+             -- sys type apps
+             
              ,("M-C-2",namedScratchpadAction scratchpads "tint2")
              ,("M-C-a",namedScratchpadAction scratchpads "xfce4-appfinder")
              ,("M-C-c",namedScratchpadAction scratchpads "conky")
@@ -124,7 +127,7 @@ myKeys= [
              ,("M-C-p",namedScratchpadAction scratchpads "htop")
              ,("M-C-s",spawn "screenshot")
              ,("M-C-t",namedScratchpadAction scratchpads "terminal")
-             ,("M-C-x",spawn "gxmessage -wrap -bg black -fg green `xprop | grep WM_`")
+             ,("M-C-x",spawn "xinfoatmouse")
              
              -- workspace management
              
