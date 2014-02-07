@@ -10,16 +10,14 @@ import System.Exit
 
 import System.IO
 
-import qualified XMonad.StackSet as W
-
 import XMonad.Actions.CycleWS
 import XMonad.Actions.CycleWindows  (rotFocusedUp, rotFocusedDown)
 import XMonad.Actions.RotSlaves
 
 import qualified XMonad.Actions.Submap as SM
 import qualified XMonad.Actions.Search as S
+
 import XMonad.Actions.WindowBringer()
-import qualified Data.Map as M
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops (ewmhDesktopsLogHook)
 import XMonad.Hooks.ManageDocks
