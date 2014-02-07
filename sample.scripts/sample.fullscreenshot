@@ -1,2 +1,3 @@
 #!/bin/sh
+# email:rileyrg@gmail.com
 scrot -s -d3 -q80 'shot-%Y%m%d-%H.%M.%S.jpg' -e 'mv $f ~/tmp/' && nautilus ~/tmp

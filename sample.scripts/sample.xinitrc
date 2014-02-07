@@ -1,3 +1,5 @@
+#!/bin/sh
+# email:rileyrg@gmail.com
 # redirect all shell output
 rm ${HOME}/.xsession-errors
 exec > ${HOME}//.xsession-errors 2>&1

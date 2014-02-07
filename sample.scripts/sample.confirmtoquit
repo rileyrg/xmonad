@@ -1,4 +1,10 @@
 #!/bin/bash
-if zenity --question --title='Really logout of  your session?' --text='Logout';
-   then pkill -u ${USER};
+# for xmonad quit
+# email:rileyrg@gmail.com
+if zenity --timeout=5 --question --title='Really logout of  your session?' --text='Logout';
+then
+    if zenity --timeout=5 --question --title="You're sure?" --text='Really Sure?';
+    then
+         ls;# pkill -u ${USER};
+    fi
 fi
