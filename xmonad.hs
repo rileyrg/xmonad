@@ -36,7 +36,7 @@ import XMonad.Prompt.AppLauncher as AL
 import XMonad.Prompt.Ssh
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
-import XMonad.Util.EZConfig(additionalKeysP)
+import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 
 -- import XMonad.Hooks.DebugStack
@@ -91,31 +91,18 @@ scratchpads = [
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
 
--- searchEngineMap method = M.fromList
---                            [("g", method S.google)
---                            ,("h", method S.hoogle)
---                            ,("w", method S.wikipedia)
---                            ,("i", method S.imdb)
---                            ,("a", method S.amazon)
---                            ,("m", method S.maps)
---                            ,("y", method S.youtube)
---                            ,("h", method hayoo)
---                            ]
---       where
---         hayoo = S.searchEngine "Hayoo"  "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query="
-
-searchEngineMap method = M.fromList
-                           [((0, xK_g), method S.google)
-                           ,((0, xK_H), method S.hoogle)
-                           ,((0, xK_w), method S.wikipedia)
-                           ,((0, xK_i), method S.imdb)
-                           ,((0, xK_a), method S.amazon)
-                           ,((0, xK_m), method S.maps)
-                           ,((0, xK_y), method S.youtube)
-                           ,((0, xK_h), method hayoo)
-                           ]
-      where
-        hayoo = S.searchEngine "Hayoo"  "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query="
+searchEngineMap method = mkKeymap (myConfig undefined) 
+                         [("g", method S.google)
+                         ,("h", method S.hoogle)
+                         ,("w", method S.wikipedia)
+                         ,("i", method S.imdb)
+                         ,("a", method S.amazon)
+                         ,("m", method S.maps)
+                         ,("y", method S.youtube)
+                         ,("h", method hayoo)
+                         ]
+    where
+      hayoo = S.searchEngine "Hayoo"  "http://holumbus.fh-wedel.de/hayoo/hayoo.html?query="
 
 myKeys :: [(String, X ())]
 myKeys= [
