@@ -18,10 +18,12 @@ import qualified XMonad.Actions.Submap as SM
 import qualified XMonad.Actions.Search as S
 
 import XMonad.Actions.WindowBringer()
+import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops (ewmhDesktopsLogHook)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.Circle
 import XMonad.Layout.DragPane
@@ -171,15 +173,23 @@ myStartUpHook  =   do
   spawnOnce "xscreensaver -no-splash"
   spawnOnce "dropbox start -i"
 
+     {- ... -}
+
+myFadeHook = composeAll [
+              isUnfocused --> transparency 0.2
+              ,opaque
+             ]
+
 myConfig p =  defaultConfig {
-             manageHook =  namedScratchpadManageHook scratchpads <+> manageDocks <+>  myManageHook
-           ,logHook =  dynamicLogWithPP xmobarPP {ppOutput = hPutStrLn p}  <+> ewmhDesktopsLogHook -- <+> debugStackLogHook
+             manageHook = namedScratchpadManageHook scratchpads <+> manageDocks
+           ,logHook = fadeWindowsLogHook myFadeHook <+> updatePointer (Relative 0.5 0.5) <+> dynamicLogWithPP xmobarPP {ppOutput = hPutStrLn p}  <+> ewmhDesktopsLogHook -- <+> debugStackLogHook
+           ,handleEventHook = fadeWindowsEventHook
            ,layoutHook = myLayout
-           , startupHook = myStartUpHook
-           , workspaces= myWorkSpaces
-           , modMask = mod4Mask
-           , focusFollowsMouse = False
-           , terminal =  myTerminal
+           ,startupHook = myStartUpHook
+           ,workspaces= myWorkSpaces
+           ,modMask = mod4Mask
+           ,focusFollowsMouse = False
+           ,terminal =  myTerminal
            } 
 
 main :: IO ()

@@ -5,7 +5,7 @@ case "$1" in
     0)  prog="pkill -u ${USER}"
         text="Really logout?"
         ;;
-    1)  prog="gksudo shutdown now"
+    1)  prog="/usr/bin/gksudo \"shutdown -h now\""
         text="Really shutdown?"
         ;;
     *)  zenity --warning --text "Whoops"
@@ -13,10 +13,10 @@ case "$1" in
         ;;
 esac
 
-if zenity --timeout=5 --question --title"=Confirm" --text="${text}";
+if zenity --timeout=5 --question --title"=Confirm" --text="${text} : ${prog}";
 then
     if zenity --timeout=5 --question --title="You're sure?" --text='Really Sure?';
     then
-         exec ${prog}
+         exec "${prog}"
     fi
 fi
