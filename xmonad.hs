@@ -54,13 +54,12 @@ myManageHook =  composeAll . concat $
                                , className =? "Eclipse"  --> doShift "3:IDE"
                                , className =? "Wireshark"  --> doShift "4:Wireshark"
                                ,isDialog  --> doCenterFloat
-                               -- ,isFullscreen  --> doFullFloat
                                 ] 
                                ]
 
     where
-      myFloats        = ["xvidcap"]
-      myIgnores       = ["pinentry-x11","zenity","Audacious","conky"]
+      myFloats        = ["xvidcap","pinentry"]
+      myIgnores       = ["conky"]
 
 myLayout = 
     -- onWorkspace "2:TV"   (noBorders (fullscreenFull  Full )) $
@@ -77,7 +76,7 @@ scratchpads = [
      NS "9patchresizer" "9patchresizer" (className =?"9Patch Resizer") nonFloating,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
-     NS "conky" "conky" (appName =? "conky") doFloat ,
+     NS "conky" "conky" (className =? "conky") doIgnore ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
      NS "evince" "evince" (className =? "evince") nonFloating ,
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
@@ -157,8 +156,8 @@ myKeys= [
              ,("M-S-<Delete>", kill)
              ,("M-C-l", spawn "xscreensaver-command -l")
              -- Quit xmonad
-             ,("M-C-q", spawn "confirmtoquit 0")
-             ,("M-C-d", spawn "confirmtoquit 1")
+             ,("M-C-q", spawn "confirmtoquit")
+             ,("M-C-d", spawn "confirmtoquit --shutdown")
              ,("M-C-v", spawn "gnome-volume-control")
              ]
                 
@@ -179,7 +178,7 @@ myFadeHook = composeAll [
              ]
 
 myConfig p =  defaultConfig {
-             manageHook = namedScratchpadManageHook scratchpads <+> manageDocks
+             manageHook = myManageHook <+> namedScratchpadManageHook scratchpads <+> manageDocks
            ,logHook = fadeWindowsLogHook myFadeHook <+> updatePointer (Relative 0.5 0.5) <+> dynamicLogWithPP xmobarPP {ppOutput = hPutStrLn p}  <+> ewmhDesktopsLogHook -- <+> debugStackLogHook
            ,handleEventHook = fadeWindowsEventHook
            ,layoutHook = myLayout
