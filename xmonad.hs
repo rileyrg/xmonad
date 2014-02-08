@@ -60,7 +60,7 @@ myManageHook =  composeAll . concat $
 
     where
       myFloats        = ["xvidcap"]
-      myIgnores       = ["pinentry-x11","zenity","Audacious"]
+      myIgnores       = ["pinentry-x11","zenity","Audacious","conky"]
 
 myLayout = 
     -- onWorkspace "2:TV"   (noBorders (fullscreenFull  Full )) $
@@ -77,6 +77,7 @@ scratchpads = [
      NS "9patchresizer" "9patchresizer" (className =?"9Patch Resizer") nonFloating,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
+     NS "conky" "conky" (appName =? "conky") doFloat ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
      NS "evince" "evince" (className =? "evince") nonFloating ,
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
@@ -86,7 +87,6 @@ scratchpads = [
      NS "pcmanfm" "pcmanfm" (appName =?"pcmanfm") nonFloating,
      NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") nonFloating ,
      NS "terminal" "mytoggleterm" (appName =? "terminal") nonFloating,
-     NS "tint2" "tint2 -c ${HOME}/.xmonad/.tintrc && sleep 5 && killall tint2" (appName =? "tint2") nonFloating,
      NS "wireshark" "wireshark" (className =? "Wireshark") nonFloating ,
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
@@ -121,7 +121,6 @@ myKeys= [
 
              -- sys type apps
              
-             ,("M-C-2",namedScratchpadAction scratchpads "tint2")
              ,("M-C-a",namedScratchpadAction scratchpads "xfce4-appfinder")
              ,("M-C-c",namedScratchpadAction scratchpads "conky")
              ,("M-C-h",sshPrompt defaultXPConfig)
@@ -167,13 +166,12 @@ myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
   spawnOnce "xcompmgr -c"
+  spawnOnce "conky"
   spawnOnce "dbus-launch --session-exit"
   spawnOnce "nm-applet --sm-disable"
   spawnOnce "feh --bg-fill ${WALLPAPER}"
   spawnOnce "xscreensaver -no-splash"
   spawnOnce "dropbox start -i"
-
-     {- ... -}
 
 myFadeHook = composeAll [
               isUnfocused --> transparency 0.2
