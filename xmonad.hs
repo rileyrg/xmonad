@@ -167,7 +167,7 @@ myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
   spawnOnce "xcompmgr -cCfF -t-5 -l-5 -r4.2 -o.55 -D2"
-  spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 255 --tint 0x000000 --height 16"
+  spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 0 --tint 0x000000 --height 16"
   spawnOnce "conky"
   spawnOnce "nm-applet --sm-disable"
   spawnOnce "feh --bg-fill ${WALLPAPER}"
