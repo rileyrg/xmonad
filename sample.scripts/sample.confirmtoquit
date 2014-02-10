@@ -9,6 +9,8 @@ case "$cmd" in
         ;;
     "--shutdown")  text="Really shutdown?"
         ;;
+    "--restart")  text="Really restart?"
+        ;;
     *)  zenity --warning --text "Whoops"
         exit
         ;;
@@ -16,18 +18,18 @@ esac
 
 if zenity --timeout=5 --question --title"=Confirm" --text="${text} : ${prog}";
 then
-    case "$cmd" in
-        "--logout")  
-            if zenity --timeout=5 --question --title="You're sure?" --text='Really Sure?';
-            then
+    if zenity --timeout=5 --question --title="You're sure?" --text='Really Sure?';
+    then
+        case "$cmd" in
+            "--logout")  
                 pkill -u ${USER}
-            fi
-            ;;
-        "--shutdown")
-            if zenity --timeout=5 --question --title="You're sure?" --text='Really Sure?';
-            then
-            gksudo poweroff
-            fi
-            ;;
-    esac
+                ;;
+            "--shutdown")
+                gksudo 'dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop'
+                ;;
+            "--restart")
+                gksudo 'dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart'
+                ;;
+        esac
+    fi
 fi

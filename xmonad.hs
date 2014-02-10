@@ -1,43 +1,44 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
--- XMonad setup for debian 
+-- XMonad setup for debian
 -- rileyrg@gmail.com
 
-import XMonad
+import           XMonad
 
-import Data.List
-import System.Exit
+import           Data.List
+import           System.Exit
 
-import System.IO
+import           System.IO
 
-import XMonad.Actions.CycleWS
-import XMonad.Actions.CycleWindows  (rotFocusedUp, rotFocusedDown)
-import XMonad.Actions.RotSlaves
+import           XMonad.Actions.CycleWindows         (rotFocusedDown,
+                                                      rotFocusedUp)
+import           XMonad.Actions.CycleWS
+import           XMonad.Actions.RotSlaves
 
-import qualified XMonad.Actions.Submap as SM
-import qualified XMonad.Actions.Search as S
+import qualified XMonad.Actions.Search               as S
+import qualified XMonad.Actions.Submap               as SM
 
-import XMonad.Actions.WindowBringer()
-import XMonad.Actions.UpdatePointer
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops (ewmhDesktopsLogHook)
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.FadeWindows
-import XMonad.Hooks.SetWMName
-import XMonad.Layout.Circle
-import XMonad.Layout.DragPane
-import XMonad.Layout.Grid
-import XMonad.Layout.MultiToggle
-import XMonad.Layout.MultiToggle.Instances
-import XMonad.Layout.Reflect
-import XMonad.Prompt
-import XMonad.Prompt.AppLauncher as AL
-import XMonad.Prompt.Ssh
-import XMonad.Util.Run
-import XMonad.Util.SpawnOnce
-import XMonad.Util.EZConfig
-import XMonad.Util.NamedScratchpad
+import           XMonad.Actions.UpdatePointer
+import           XMonad.Actions.WindowBringer        ()
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops           (ewmhDesktopsLogHook)
+import           XMonad.Hooks.FadeWindows
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.SetWMName
+import           XMonad.Layout.Circle
+import           XMonad.Layout.DragPane
+import           XMonad.Layout.Grid
+import           XMonad.Layout.MultiToggle
+import           XMonad.Layout.MultiToggle.Instances
+import           XMonad.Layout.Reflect
+import           XMonad.Prompt
+import           XMonad.Prompt.AppLauncher           as AL
+import           XMonad.Prompt.Ssh
+import           XMonad.Util.EZConfig
+import           XMonad.Util.NamedScratchpad
+import           XMonad.Util.Run
+import           XMonad.Util.SpawnOnce
 
 -- import XMonad.Hooks.DebugStack
 
@@ -46,22 +47,22 @@ myWorkSpaces = ["1:Desktop", "2:TV" ,"3:IDE","4:Wireshark"]
 
 myManageHook :: ManageHook
 myManageHook =  composeAll . concat $
-                               [ 
+                               [
                                [fmap(i `isPrefixOf`) resource --> doIgnore  | i <- myIgnores]
                                ,[fmap(f `isPrefixOf`) resource --> doCenterFloat   | f <- myFloats]
-                               ,[ 
+                               ,[
                                  className =? "jetbrains-idea-ce"  --> doShift "3:IDE"
                                , className =? "Eclipse"  --> doShift "3:IDE"
                                , className =? "Wireshark"  --> doShift "4:Wireshark"
                                ,isDialog  --> doCenterFloat
-                                ] 
+                                ]
                                ]
 
     where
       myFloats        = ["xvidcap","pinentry"]
       myIgnores       = ["conky"]
 
-myLayout = 
+myLayout =
     -- onWorkspace "2:TV"   (noBorders (fullscreenFull  Full )) $
     -- onWorkspace "3:IDE"  (noBorders (fullscreenFull  Full )) $
     -- onWorkspace "4:Wireshark"   (noBorders (fullscreenFull  Full )) $
@@ -90,7 +91,7 @@ scratchpads = [
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
 
-smap  m = mkKeymap (myConfig undefined) 
+smap  m = mkKeymap (myConfig undefined)
                          [("g", m S.google)
                          ,("h", m S.hoogle)
                          ,("w", m S.wikipedia)
@@ -119,7 +120,7 @@ myKeys= [
              ,("M-S-w",namedScratchpadAction scratchpads "wireshark")
 
              -- sys type apps
-             
+
              ,("M-C-a",namedScratchpadAction scratchpads "xfce4-appfinder")
              ,("M-C-c",namedScratchpadAction scratchpads "conky")
              ,("M-C-h",sshPrompt defaultXPConfig)
@@ -128,9 +129,9 @@ myKeys= [
              ,("M-C-s",spawn "screenshot")
              ,("M-C-t",namedScratchpadAction scratchpads "terminal")
              ,("M-C-x",spawn "xinfoatmouse")
-             
+
              -- workspace management
-             
+
              ,("M-<Down>",  nextWS)
              ,("M-<Up>",    prevWS)
              ,("M-C-<Up>",  shiftToNext)
@@ -148,25 +149,26 @@ myKeys= [
              ,("M-f", sendMessage $ Toggle FULL)
              ,("M-y", sendMessage $ Toggle REFLECTX)
              ,("M-b", sendMessage ToggleStruts)
-             
+
              -- session management
-             
+
              ,("M-C-f", withFocused float)
              ,("M-C-<Delete>", spawn "xkill")
              ,("M-S-<Delete>", kill)
              ,("M-C-l", spawn "xscreensaver-command -l")
              -- Quit xmonad
-             ,("M-C-q", spawn "confirmtoquit")
              ,("M-C-d", spawn "confirmtoquit --shutdown")
+             ,("M-C-q", spawn "confirmtoquit")
+             ,("M-C-r", spawn "confirmtoquit --restart")
              ,("M-C-v", spawn "gnome-volume-control")
              ]
-                
+
 myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
-  spawnOnce "xcompmgr -c"
+  spawnOnce "xcompmgr -cCfF -t-5 -l-5 -r4.2 -o.55 -D2"
+  spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 6 --transparent true --alpha 255 --tint 0x000000 --height 16"
   spawnOnce "conky"
-  spawnOnce "dbus-launch --session-exit"
   spawnOnce "nm-applet --sm-disable"
   spawnOnce "feh --bg-fill ${WALLPAPER}"
   spawnOnce "xscreensaver -no-splash"
@@ -187,11 +189,11 @@ myConfig p =  defaultConfig {
            ,modMask = mod4Mask
            ,focusFollowsMouse = False
            ,terminal =  myTerminal
-           } 
+           }
 
 main :: IO ()
-main =  do 
+main =  do
   xm <- spawnPipe "xmobar"
-  xmonad $ myConfig xm 
+  xmonad $ myConfig xm
              `additionalKeysP` myKeys
 
