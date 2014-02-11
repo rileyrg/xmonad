@@ -3,7 +3,9 @@ Config { font = "xft:Bitstream Vera Sans Mono:size=16:antialias=true"
        , border = TopB
        , bgColor = "black"
        , fgColor = "grey"
-       , position = Top
+       , position = Static { xpos = 48 , ypos = 0, width = 1872, height = 24 }
+       , allDesktops = True
+       , overrideRedirect = True
        , lowerOnStart = True
        , persistent = False
        , hideOnStart = False
@@ -13,6 +15,6 @@ Config { font = "xft:Bitstream Vera Sans Mono:size=16:antialias=true"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<fc=#ee9a00>%date%</fc> | %EDDH% | %StdinReader% "
+       , template = "    %StdinReader% }{<fc=#ee9a00>%date%</fc> | %EDDH%"
        }
 

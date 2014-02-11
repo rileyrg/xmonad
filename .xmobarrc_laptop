@@ -3,7 +3,10 @@ Config { font = "xft:Bitstream Vera Sans Mono:size=16:antialias=true"
        , border = TopB
        , bgColor = "black"
        , fgColor = "grey"
+       , position = Static { xpos = 48 , ypos = 0, width = 1232, height = 24 }
        , position = Top
+       , allDesktops = True
+       , overrideRedirect = False
        , lowerOnStart = True
        , persistent = False
        , hideOnStart = False
