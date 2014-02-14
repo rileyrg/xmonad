@@ -6,7 +6,6 @@
 import           XMonad
 
 import           Data.List
-import           System.Exit
 
 import           System.IO
 
@@ -60,7 +59,7 @@ myManageHook =  composeAll . concat $
 
     where
       myFloats        = ["xvidcap","pinentry"]
-      myIgnores       = ["conky"]
+      myIgnores       = ["xx","xxx"]
 
 myLayout =
     -- onWorkspace "2:TV"   (noBorders (fullscreenFull  Full )) $
@@ -70,14 +69,13 @@ myLayout =
 
 myTerminal :: String
 myTerminal = "urxvt"
-
 scratchpads :: [NamedScratchpad]
 scratchpads = [
 
      NS "9patchresizer" "9patchresizer" (className =?"9Patch Resizer") nonFloating,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
-     NS "conky" "conky" (className =? "conky") doIgnore ,
+     NS "conky" "conky -c ${HOME}/.conky/conkyrc -q" (className =? "Conky") doFloat ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
      NS "evince" "evince" (className =? "evince") nonFloating ,
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
@@ -109,7 +107,7 @@ myKeys= [
               ("<Print>", spawn "fullscreenshot")
              ,("M-s", SM.submap $ smap $ S.promptSearchBrowser greenXPConfig "firefox")
              ,("M-g",  S.promptSearchBrowser greenXPConfig "firefox" S.google)
-             ,("M-<F1>", AL.launchApp defaultXPConfig "gnome-terminal -x info " )
+             ,("M-<F1>", AL.launchApp def "gnome-terminal -x info " )
              ,("M-S-2",namedScratchpadAction scratchpads "9patchresizer")
              ,("M-S-c",namedScratchpadAction scratchpads "chrome")
              ,("M-S-d",namedScratchpadAction scratchpads "evince")
@@ -123,7 +121,7 @@ myKeys= [
 
              ,("M-C-a",namedScratchpadAction scratchpads "xfce4-appfinder")
              ,("M-C-c",namedScratchpadAction scratchpads "conky")
-             ,("M-C-h",sshPrompt defaultXPConfig)
+             ,("M-C-h",sshPrompt def)
              ,("M-C-n",namedScratchpadAction scratchpads "pcmanfm")
              ,("M-C-p",namedScratchpadAction scratchpads "htop")
              ,("M-C-s",spawn "screenshot")
@@ -166,22 +164,26 @@ myKeys= [
 myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
-  spawnOnce "xcompmgr -cCfF -t-5 -l-5 -r4.2 -o.55 -D2"
-  spawnOnce "conky"
+  spawnOnce "xcompmgr"
   spawnOnce "feh --bg-fill ${WALLPAPER}"
   spawnOnce "dropbox start -i"
   spawnOnce "xscreensaver -no-splash"
-  spawnOnce "wicd-client --tray"
-  spawnOnce "stalonetray"
+  spawnOnce "sleep 1 && wicd-client --tray"
+  spawnOnce "sleep 1 &&  stalonetray"
 
 myFadeHook = composeAll [
               isUnfocused --> transparency 0.2
               ,opaque
              ]
 
-myConfig p =  defaultConfig {
+myConfig p =  def {
              manageHook = myManageHook <+> namedScratchpadManageHook scratchpads <+> manageDocks
-           ,logHook = fadeWindowsLogHook myFadeHook <+> updatePointer (Relative 0.5 0.5) <+> dynamicLogWithPP xmobarPP {ppOutput = hPutStrLn p}  <+> ewmhDesktopsLogHook -- <+> debugStackLogHook
+           ,logHook = fadeWindowsLogHook myFadeHook <+> updatePointer (0.5, 0.5) (0, 0) <+> dynamicLogWithPP xmobarPP {
+--           ,logHook = fadeWindowsLogHook myFadeHook <+>  updatePointer (Relative 0.5 0.5)  <+> dynamicLogWithPP xmobarPP {
+             ppOutput = hPutStrLn p
+             ,ppOrder               = \(ws:l:t:_)   -> [ws]
+             }  <+> ewmhDesktopsLogHook -- <+> debugStackLogHook
+-- <+> debugStackLogHook
            ,handleEventHook = fadeWindowsEventHook
            ,layoutHook = myLayout
            ,startupHook = myStartUpHook
