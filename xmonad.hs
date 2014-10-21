@@ -174,20 +174,23 @@ myKeys= [
              ,("M-C-r", spawn "confirmtoquit --restart")
              ]
 
+myStartupSpawns :: [String]
+myStartupSpawns = [
+  "xcompmgr"
+  ,"xscreensaver -no-splash"
+  ,"stalonetray"
+  ,"feh --bg-fill ${WALLPAPER}"
+  ,"sleep 2 && xfce4-power-manager" 
+  ,"sleep 2 && SpiderOak"
+  ,"sleep 2 && dropbox start -i"]
+
 myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
-  spawnOnce "xcompmgr"
-  spawnOnce "xscreensaver -no-splash"
-  spawnOnce "stalonetray"
-  spawnOnce "feh --bg-fill ${WALLPAPER}"
-  spawnOnce "sleep 2 && xfce4-power-manager" 
-  spawnOnce "sleep 2 && SpiderOak"
-  spawnOnce "sleep 2 && dropbox start -i"
-  spawnOnce "sleep 2 && wicd-client --tray"
+  mapM_ spawnOnce myStartupSpawns
 
 
-
+myFadeHook :: Query Opacity  
 myFadeHook = composeAll [
               isUnfocused --> transparency 0.2
               ,opaque
