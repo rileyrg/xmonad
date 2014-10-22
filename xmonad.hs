@@ -1,7 +1,9 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 -- XMonad setup for debian
--- Richard G. Riley
+-- Richard Riley
 -- rileyrg@gmail.com
+
+-- {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 import           XMonad
 
@@ -17,7 +19,7 @@ import           XMonad.Actions.RotSlaves
 import qualified XMonad.Actions.Search               as S
 import qualified XMonad.Actions.Submap               as SM
 
-import           XMonad.Actions.UpdatePointer
+-- import           XMonad.Actions.UpdatePointer
 import           XMonad.Actions.WindowBringer        ()
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops           (ewmhDesktopsLogHook)
@@ -42,8 +44,13 @@ import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Run
 import           XMonad.Util.SpawnOnce
 
+import System.Directory
+
+
 -- import XMonad.Hooks.DebugStack
 
+laptopMode :: IO Bool
+laptopMode = doesFileExist "~/.laptop"
 myWorkSpaces :: [String]
 myWorkSpaces = ["1:General", "2:General" ,"3:IDE","4:Wireshark","5:TV"]
 
@@ -67,7 +74,7 @@ myManageHook =  composeAll . concat $
       myIgnores       = ["xx","xxx"]
 
 myLayout =
-    onWorkspace "1:General" (avoidStruts $ (mkToggle(FULL??EOT) (Tall 1 (3/100) (1/2))))  $
+    onWorkspace "1:General" (avoidStruts $ mkToggle(FULL??EOT) (Tall 1 (3/100) (1/2)))  $
     onWorkspace "3:IDE"  (noBorders (fullscreenFull  Full )) $
     onWorkspace "4:Wireshark"   (noBorders (fullscreenFull  Full )) $
     onWorkspace "5:TV"   (noBorders (fullscreenFull  Full )) $
@@ -98,6 +105,7 @@ scratchpads = [
      NS "acroread" "acroread" (className =? "Acroread-en") nonFloating ,
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
+
 
 smap  m = mkKeymap (myConfig undefined)
                          [("g", m S.google)
@@ -174,20 +182,23 @@ myKeys= [
              ,("M-C-r", spawn "confirmtoquit --restart")
              ]
 
-myStartupSpawns :: [String]
-myStartupSpawns = [
-  "xcompmgr"
-  ,"xscreensaver -no-splash"
-  ,"stalonetray"
-  ,"feh --bg-fill ${WALLPAPER}"
-  ,"sleep 2 && xfce4-power-manager" 
-  ,"sleep 2 && SpiderOak"
-  ,"sleep 2 && dropbox start -i"]
 
 myStartUpHook :: X ()
+
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
-  mapM_ spawnOnce myStartupSpawns
+  useWicd <- io $ doesFileExist "/usr/bin/wicd-gtk"
+  mapM_ spawnOnce (myStartupSpawns ++ ["sleep 2 && wicd-gtk --tray" | useWicd] )
+myStartupSpawns :: [String]
+myStartupSpawns = [
+      "xcompmgr"
+      ,"xscreensaver -no-splash"
+      ,"stalonetray"
+      ,"feh --bg-fill ${WALLPAPER}"
+      ,"sleep 2 && xfce4-power-manager" 
+      ,"sleep 2 && SpiderOak"
+      ,"sleep 2 && dropbox start -i"
+      ]
 
 
 myFadeHook :: Query Opacity  
@@ -197,21 +208,18 @@ myFadeHook = composeAll [
              ]
 
 myConfig p =  def {
-             manageHook = myManageHook <+> namedScratchpadManageHook scratchpads <+> manageDocks
---           ,logHook = fadeWindowsLogHook myFadeHook <+> updatePointer (0.5, 0.5) (0, 0) <+> dynamicLogWithPP xmobarPP {
-           ,logHook = fadeWindowsLogHook myFadeHook <+> dynamicLogWithPP xmobarPP {             
---           ,logHook = fadeWindowsLogHook myFadeHook <+>  updatePointer (Relative 0.5 0.5)  <+> dynamicLogWithPP xmobarPP {
-             ppOutput = hPutStrLn p
-             }  <+> ewmhDesktopsLogHook -- <+> debugStackLogHook
--- <+> debugStackLogHook
-           ,handleEventHook = fadeWindowsEventHook
-           ,layoutHook = myLayout
-           ,startupHook = myStartUpHook
-           ,workspaces= myWorkSpaces
-           ,modMask = mod4Mask
-           ,focusFollowsMouse = False
-           ,terminal =  myTerminal
-           }
+  manageHook = myManageHook <+> namedScratchpadManageHook scratchpads <+> manageDocks
+  ,logHook = fadeWindowsLogHook myFadeHook <+> dynamicLogWithPP xmobarPP {             
+    ppOutput = hPutStrLn p
+   }  <+> ewmhDesktopsLogHook
+  ,handleEventHook = fadeWindowsEventHook
+  ,layoutHook = myLayout
+  ,startupHook = myStartUpHook
+  ,workspaces= myWorkSpaces
+  ,modMask = mod4Mask
+  ,focusFollowsMouse = False
+  ,terminal =  myTerminal
+}
 
 main :: IO ()
 main =  do
