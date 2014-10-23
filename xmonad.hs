@@ -84,7 +84,6 @@ myTerminal :: String
 myTerminal = "urxvt"
 scratchpads :: [NamedScratchpad]
 scratchpads = [
-  
      NS "9patchresizer" "9patchresizer.sh" (className =?"9Patch Resizer") nonFloating,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "groovyconsole" "groovyConsole" (className =? "org-codehaus-groovy-tools-GroovyStarter") nonFloating,
@@ -188,19 +187,17 @@ myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
   useWicd <- io $ doesFileExist "/usr/bin/wicd-gtk"
-  mapM_ spawnOnce (myStartupSpawns ++ ["sleep 2 && wicd-gtk --tray" | useWicd] )
-myStartupSpawns :: [String]
+  mapM_ spawnOnce ([ head [ "sleep " ++ show b ++ " && "| b>0] ++ a |(a,b)<-myStartupSpawns] ++ ["sleep 2 && wicd-gtk --tray" | useWicd] )
+myStartupSpawns :: [(String,Int)]
 myStartupSpawns = [
-      "xcompmgr"
-      ,"xscreensaver -no-splash"
-      ,"stalonetray"
-      ,"feh --bg-fill ${WALLPAPER}"
-      ,"sleep 2 && xfce4-power-manager" 
-      ,"sleep 2 && SpiderOak"
-      ,"sleep 2 && dropbox start -i"
+      ("xcompmgr",0)
+      ,("xscreensaver -no-splash",0)
+      ,("stalonetray",0)
+      ,("feh --bg-fill ${WALLPAPER}",0)
+      ,("xfce4-power-manager",2) 
+      ,("SpiderOak",2)
+      ,("dropbox start -i",2)
       ]
-
-
 myFadeHook :: Query Opacity  
 myFadeHook = composeAll [
               isUnfocused --> transparency 0.2
