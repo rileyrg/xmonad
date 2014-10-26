@@ -1,6 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 -- XMonad setup for debian
--- Richard Riley :  rileyrg@gmail.com
+-- Richard Riley
+-- rileyrg@gmail.com
 
 -- {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
@@ -48,8 +49,6 @@ import System.Directory
 
 -- import XMonad.Hooks.DebugStack
 
-laptopMode :: IO Bool
-laptopMode = doesFileExist "~/.laptop"
 myWorkSpaces :: [String]
 myWorkSpaces = ["1:General", "2:General" ,"3:IDE","4:Wireshark","5:TV"]
 
@@ -83,7 +82,6 @@ myTerminal :: String
 myTerminal = "urxvt"
 scratchpads :: [NamedScratchpad]
 scratchpads = [
-  
      NS "9patchresizer" "9patchresizer.sh" (className =?"9Patch Resizer") nonFloating,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "groovyconsole" "groovyConsole" (className =? "org-codehaus-groovy-tools-GroovyStarter") nonFloating,
@@ -187,19 +185,17 @@ myStartUpHook :: X ()
 myStartUpHook  =   do
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
   useWicd <- io $ doesFileExist "/usr/bin/wicd-gtk"
-  mapM_ spawnOnce (myStartupSpawns ++ ["sleep 2 && wicd-gtk --tray" | useWicd] )
-myStartupSpawns :: [String]
+  mapM_ spawnOnce ([ (if b>0 then "sleep "++ show b ++" && " else [])  ++ a |(a,b)<-myStartupSpawns] ++ ["sleep 2 && wicd-gtk --tray" | useWicd] )
+myStartupSpawns :: [(String,Int)]
 myStartupSpawns = [
-      "xcompmgr"
-      ,"xscreensaver -no-splash"
-      ,"stalonetray"
-      ,"feh --bg-fill ${WALLPAPER}"
-      ,"sleep 2 && xfce4-power-manager" 
-      ,"sleep 2 && SpiderOak"
-      ,"sleep 2 && dropbox start -i"
+      ("xcompmgr",0)
+      ,("xscreensaver -no-splash",0)
+      ,("stalonetray",0)
+      ,("feh --bg-fill ${WALLPAPER}",0)
+      ,("xfce4-power-manager",2) 
+      ,("SpiderOak",2)
+      ,("dropbox start -i",2)
       ]
-
-
 myFadeHook :: Query Opacity  
 myFadeHook = composeAll [
               isUnfocused --> transparency 0.2
