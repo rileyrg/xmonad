@@ -186,9 +186,10 @@ myStartUpHook :: X ()
 myStartUpHook  =   do
   useWicd <- io $ doesFileExist "/usr/bin/wicd-gtk"
   setWMName "LG3D" -- Java progs need this a jdk 1.6+
-  mapM_ spawnOnce ([ if c then ((if b>0 then "sleep "++ show b ++" && " else [])  ++ a)else [] |(a,b,c)<-myStartupSpawns]++["sleep 2 && wicd-gtk --tray"|useWicd])
-  where
-    myStartupSpawns = [
+  mapM_ spawnOnce ([ if c then (if b>0 then "sleep "++ show b ++" && " else [])  ++ a else [] |(a,b,c)<-myStartupSpawns]++["sleep 2 && wicd-gtk --tray"|useWicd])
+
+myStartupSpawns :: [(String, Integer, Bool)]
+myStartupSpawns = [
        ("xcompmgr",0,True)
       ,("xscreensaver -no-splash",0,True)
       ,("stalonetray",0,True)
