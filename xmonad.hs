@@ -182,20 +182,22 @@ myKeys= [
 
 myStartUpHook :: X ()
 
+
 myStartUpHook  =   do
-  setWMName "LG3D" -- Java progs need this a jdk 1.6+
   useWicd <- io $ doesFileExist "/usr/bin/wicd-gtk"
-  mapM_ spawnOnce ([ (if b>0 then "sleep "++ show b ++" && " else [])  ++ a |(a,b)<-myStartupSpawns] ++ ["sleep 2 && wicd-gtk --tray" | useWicd] )
-myStartupSpawns :: [(String,Int)]
-myStartupSpawns = [
-      ("xcompmgr",0)
-      ,("xscreensaver -no-splash",0)
-      ,("stalonetray",0)
-      ,("feh --bg-fill ${WALLPAPER}",0)
-      ,("xfce4-power-manager",2) 
-      ,("SpiderOak",2)
-      ,("dropbox start -i",2)
+  setWMName "LG3D" -- Java progs need this a jdk 1.6+
+  mapM_ spawnOnce ([ if c then ((if b>0 then "sleep "++ show b ++" && " else [])  ++ a)else [] |(a,b,c)<-myStartupSpawns]++["sleep 2 && wicd-gtk --tray"|useWicd])
+  where
+    myStartupSpawns = [
+       ("xcompmgr",0,True)
+      ,("xscreensaver -no-splash",0,True)
+      ,("stalonetray",0,True)
+      ,("feh --bg-fill ${WALLPAPER}",0,True)
+      ,("xfce4-power-manager",2,True) 
+      ,("SpiderOak",2,True)
+      ,("dropbox start -i",2,True)
       ]
+
 myFadeHook :: Query Opacity  
 myFadeHook = composeAll [
               isUnfocused --> transparency 0.2
