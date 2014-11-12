@@ -50,7 +50,7 @@ import System.Directory
 -- import XMonad.Hooks.DebugStack
 
 myWorkSpaces :: [String]
-myWorkSpaces = ["1:General", "2:General" ,"3:IDE","4:Wireshark","5:TV"]
+myWorkSpaces = ["1:General", "2:Gimp" ,"3:IDE","4:Wireshark","5:Blender","9:TV"]
 
 myManageHook :: ManageHook
 myManageHook =  composeAll . concat $
@@ -58,7 +58,9 @@ myManageHook =  composeAll . concat $
                                [fmap(i `isPrefixOf`) resource --> doIgnore  | i <- myIgnores]
                                ,[fmap(f `isPrefixOf`) resource --> doCenterFloat   | f <- myFloats]
                                ,[
-                                 className =? "SpiderOak"  --> doShift "2:General"
+                                 className =? "SpiderOak"  --> doShift "2:Gimp"
+                               , className =? "Gimp"  --> doShift "2:Gimp"
+                               , className =? "Blender"  --> doShift "5:Blender"
                                , className =? "Android SDK Manager"  --> doShift "2:General"
                                , className =? "jetbrains-idea-ce"  --> doShift "3:IDE"
                                , className =? "Eclipse"  --> doShift "3:IDE" 
@@ -73,9 +75,10 @@ myManageHook =  composeAll . concat $
 
 myLayout =
     onWorkspace "1:General" (avoidStruts $ mkToggle(FULL??EOT) (Tall 1 (3/100) (1/2)))  $
+    onWorkspace "2:Gimp"  (noBorders (fullscreenFull  Full )) $
     onWorkspace "3:IDE"  (noBorders (fullscreenFull  Full )) $
     onWorkspace "4:Wireshark"   (noBorders (fullscreenFull  Full )) $
-    onWorkspace "5:TV"   (noBorders (fullscreenFull  Full )) $
+    onWorkspace "5:Blender"   (noBorders (fullscreenFull  Full )) $
     avoidStruts $ mkToggle (single REFLECTY) $ mkToggle (single REFLECTX) $ mkToggle (single MIRROR) $ mkToggle(FULL??EOT) (Tall 1 (3/100) (1/2) ||| dragPane Horizontal 0.1 0.5||| Grid ||| Circle )
 
 myTerminal :: String
@@ -83,7 +86,9 @@ myTerminal = "urxvt"
 scratchpads :: [NamedScratchpad]
 scratchpads = [
      NS "9patchresizer" "9patchresizer.sh" (className =?"9Patch Resizer") nonFloating,
+     NS "texturepacker" "TexturePackerGUI" (className =? "TexturePacker") nonFloating ,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
+     NS "blender" "~/thirdparty/blender/blender" (className =? "Blender") nonFloating,
      NS "groovyconsole" "groovyConsole" (className =? "org-codehaus-groovy-tools-GroovyStarter") nonFloating,
      NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
      NS "conky" "conky -c ${HOME}/.conkyrc -q" (className =? "Conky") doFloat ,
@@ -122,10 +127,12 @@ myKeys= [
               ("<Print>", spawn "fullscreenshot")
              ,("M-s", SM.submap $ smap $ S.promptSearchBrowser greenXPConfig "firefox")
              ,("M-g",  S.promptSearchBrowser greenXPConfig "firefox" S.google)
+             ,("M-c",  kill)
              ,("M-<F1>", AL.launchApp def "urxvt -e info " )
              ,("M-S-r",namedScratchpadAction scratchpads "9patchresizer")
+             ,("M-S-p",namedScratchpadAction scratchpads "texturepacker")
              ,("M-S-a",namedScratchpadAction scratchpads "acroread")
-             ,("M-S-c",namedScratchpadAction scratchpads "chrome")
+             ,("M-S-b",namedScratchpadAction scratchpads "blender")
              ,("M-S-d",namedScratchpadAction scratchpads "evince")
              ,("M-S-y",namedScratchpadAction scratchpads "groovyconsole")
              ,("M-S-e",namedScratchpadAction scratchpads "emacs")
@@ -141,6 +148,7 @@ myKeys= [
              ,("M-C-c",namedScratchpadAction scratchpads "conky")
              ,("M-C-h",sshPrompt def)
              ,("M-C-f",namedScratchpadAction scratchpads "filemanager")
+             ,("M-C-S-f",spawn "pcmanfm")
              ,("M-C-p",namedScratchpadAction scratchpads "htop")
              ,("M-C-s",spawn "screenshot")
              ,("M-C-t",namedScratchpadAction scratchpads "terminal")
