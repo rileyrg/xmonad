@@ -10,7 +10,8 @@ import           XMonad
 import           Data.List
 
 import           System.IO
-
+import           System.Exit
+    
 import           XMonad.Actions.CycleWindows         (rotFocusedDown,
                                                       rotFocusedUp)
 import           XMonad.Actions.CycleWS
@@ -50,7 +51,7 @@ import System.Directory
 -- import XMonad.Hooks.DebugStack
 
 myWorkSpaces :: [String]
-myWorkSpaces = ["1:General", "2:Gimp" ,"3:IDE","4:Wireshark","5:Blender","9:TV"]
+myWorkSpaces = ["1:General", "2:Gimp" ,"3:IDE","4:Wireshark","5:**","9:TV"]
 
 myManageHook :: ManageHook
 myManageHook =  composeAll . concat $
@@ -60,7 +61,7 @@ myManageHook =  composeAll . concat $
                                ,[
                                  className =? "SpiderOak"  --> doShift "2:Gimp"
                                , className =? "Gimp"  --> doShift "2:Gimp"
-                               , className =? "Blender"  --> doShift "5:Blender"
+                               , className =? "Blender"  --> doShift "3:IDE"
                                , className =? "Android SDK Manager"  --> doShift "2:General"
                                , className =? "jetbrains-idea-ce"  --> doShift "3:IDE"
                                , className =? "Eclipse"  --> doShift "3:IDE" 
@@ -75,10 +76,10 @@ myManageHook =  composeAll . concat $
 
 myLayout =
     onWorkspace "1:General" (avoidStruts $ mkToggle(FULL??EOT) (Tall 1 (3/100) (1/2)))  $
-    onWorkspace "2:Gimp"  (noBorders (fullscreenFull  Full )) $
-    onWorkspace "3:IDE"  (noBorders (fullscreenFull  Full )) $
-    onWorkspace "4:Wireshark"   (noBorders (fullscreenFull  Full )) $
-    onWorkspace "5:Blender"   (noBorders (fullscreenFull  Full )) $
+    -- onWorkspace "2:Gimp"  (noBorders (fullscreenFull  Full )) $
+    -- onWorkspace "3:IDE"  (noBorders (fullscreenFull  Full )) $
+    -- onWorkspace "4:Wireshark"   (noBorders (fullscreenFull  Full )) $
+    -- onWorkspace "5:Blender"   (noBorders (fullscreenFull  Full )) $
     avoidStruts $ mkToggle (single REFLECTY) $ mkToggle (single REFLECTX) $ mkToggle (single MIRROR) $ mkToggle(FULL??EOT) (Tall 1 (3/100) (1/2) ||| dragPane Horizontal 0.1 0.5||| Grid ||| Circle )
 
 myTerminal :: String
@@ -89,22 +90,27 @@ scratchpads = [
      NS "texturepacker" "TexturePackerGUI" (className =? "TexturePacker") nonFloating ,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "blender" "~/thirdparty/blender/blender" (className =? "Blender") nonFloating,
+     NS "particleeditor" "~/bin/particleeditor.sh" (title =? "Particle Editor") nonFloating,
      NS "groovyconsole" "groovyConsole" (className =? "org-codehaus-groovy-tools-GroovyStarter") nonFloating,
      NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
      NS "conky" "conky -c ${HOME}/.conkyrc -q" (className =? "Conky") doFloat ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
-     NS "evince" "evince" (className =? "evince") nonFloating ,
+     NS "physed" "physed.sh" (title =? "Physics Body Editor") nonFloating ,
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
      NS "firefox" "firefox" (className =? "Iceweasel") nonFloating ,
      NS "torbrowser" "torbrowser-launcher" (className =? "Tor Browser") nonFloating ,
      NS "htop" "urxvt -name htop -title htop -e htop" (title =? "htop") nonFloating,
+     NS "inkscape" "inkscape" (className =?"Inkscape") nonFloating,
      NS "intellij" "idea.sh" (className =?"jetbrains-idea-ce") nonFloating,
      NS "filemanager" "pcmanfm" (className =?"Pcmanfm") nonFloating,
      NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") nonFloating ,
      NS "terminal" "mytoggleterm" (appName =? "terminal") nonFloating,
+     NS "tiled" "tiled" (className =? "Tiled") nonFloating,
      NS "wireshark" "wireshark" (className =? "Wireshark") nonFloating ,
      NS "pavucontrol" "pavucontrol" (title =? "Volume Control") nonFloating ,
      NS "acroread" "acroread" (className =? "Acroread-en") nonFloating ,
+     NS "sfxr" "sfxr" (className =? "sfxr") nonFloating ,
+     NS "audacity" "audacity" (className =? "Audacity") nonFloating ,
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
 
@@ -129,22 +135,25 @@ myKeys= [
              ,("M-g",  S.promptSearchBrowser greenXPConfig "firefox" S.google)
              ,("M-c",  kill)
              ,("M-<F1>", AL.launchApp def "urxvt -e info " )
-             ,("M-S-r",namedScratchpadAction scratchpads "9patchresizer")
-             ,("M-S-p",namedScratchpadAction scratchpads "texturepacker")
              ,("M-S-a",namedScratchpadAction scratchpads "acroread")
              ,("M-S-b",namedScratchpadAction scratchpads "blender")
-             ,("M-S-d",namedScratchpadAction scratchpads "evince")
-             ,("M-S-y",namedScratchpadAction scratchpads "groovyconsole")
+             ,("M-S-c",namedScratchpadAction scratchpads "particleeditor")
+             ,("M-S-d",namedScratchpadAction scratchpads "physed")
              ,("M-S-e",namedScratchpadAction scratchpads "emacs")
              ,("M-S-f",namedScratchpadAction scratchpads "firefox")
-             ,("M-S-t",namedScratchpadAction scratchpads "torbrowser")
              ,("M-S-g",namedScratchpadAction scratchpads "gimp")
              ,("M-S-i",namedScratchpadAction scratchpads "intellij")
+             ,("M-S-k",namedScratchpadAction scratchpads "inkscape")
+             ,("M-S-r",namedScratchpadAction scratchpads "9patchresizer")
+             ,("M-S-p",namedScratchpadAction scratchpads "texturepacker")
+             ,("M-S-t",namedScratchpadAction scratchpads "tiled")
              ,("M-S-w",namedScratchpadAction scratchpads "wireshark")
+             ,("M-S-x",namedScratchpadAction scratchpads "sfxr")
+             ,("M-S-y",namedScratchpadAction scratchpads "audacity")
 
              -- sys type apps
 
-             ,("M-C-a",namedScratchpadAction scratchpads "xfce4-appfinder")
+             ,("M-C-a",namedScratchpadAction scratchpads "xfce4-appfinder") 
              ,("M-C-c",namedScratchpadAction scratchpads "conky")
              ,("M-C-h",sshPrompt def)
              ,("M-C-f",namedScratchpadAction scratchpads "filemanager")
@@ -183,7 +192,7 @@ myKeys= [
              -- Quit xmonad
              ,("M-C-z", spawn "confirmtoquit --suspend")
              ,("M-C-d", spawn "confirmtoquit --shutdown")
-             ,("M-C-q", spawn "confirmtoquit")
+             ,("M-C-q", io exitSuccess)
              ,("M-C-r", spawn "confirmtoquit --restart")
              ]
 
@@ -198,13 +207,10 @@ myStartUpHook  =   do
 
 myStartupSpawns :: [(String, Integer, Bool)]
 myStartupSpawns = [
-       ("xcompmgr",0,True)
-      ,("xscreensaver -no-splash",0,True)
-      ,("stalonetray",0,True)
-      ,("feh --bg-fill ${WALLPAPER}",0,True)
-      ,("xfce4-power-manager",2,True) 
-      ,("SpiderOak",2,True)
-      ,("dropbox start -i",2,True)
+      -- ("stalonetray",0,True)
+      -- ("xfce4-power-manager",2,True) 
+      -- ,("SpiderOak",2,True)
+      -- ,("dropbox start -i",2,True)
       ]
 
 myFadeHook :: Query Opacity  
