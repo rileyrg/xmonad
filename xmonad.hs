@@ -88,6 +88,7 @@ scratchpads :: [NamedScratchpad]
 scratchpads = [
      NS "9patchresizer" "9patchresizer.sh" (className =?"9Patch Resizer") nonFloating,
      NS "texturepacker" "TexturePackerGUI" (className =? "TexturePacker") nonFloating ,
+     NS "rube" "rube.sh" (className =? "Rube.bin") nonFloating ,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "blender" "~/thirdparty/blender/blender" (className =? "Blender") nonFloating,
      NS "particleeditor" "~/bin/particleeditor.sh" (title =? "Particle Editor") nonFloating,
@@ -148,6 +149,7 @@ myKeys= [
              ,("M-S-r",namedScratchpadAction scratchpads "9patchresizer")
              ,("M-S-p",namedScratchpadAction scratchpads "texturepacker")
              ,("M-S-t",namedScratchpadAction scratchpads "tiled")
+             ,("M-S-u",namedScratchpadAction scratchpads "rube")
              ,("M-S-w",namedScratchpadAction scratchpads "wireshark")
              ,("M-S-x",namedScratchpadAction scratchpads "sfxr")
              ,("M-S-y",namedScratchpadAction scratchpads "audacity")
