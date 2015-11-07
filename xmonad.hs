@@ -31,9 +31,7 @@ import           XMonad.Hooks.SetWMName
 import           XMonad.Layout.Circle
 import           XMonad.Layout.DragPane
 import           XMonad.Layout.Grid
-import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.MultiToggle
-import           XMonad.Layout.NoBorders
 import           XMonad.Layout.PerWorkspace 
 import           XMonad.Layout.MultiToggle.Instances
 import           XMonad.Layout.Reflect
@@ -88,7 +86,7 @@ scratchpads :: [NamedScratchpad]
 scratchpads = [
      NS "9patchresizer" "9patchresizer.sh" (className =?"9Patch Resizer") nonFloating,
      NS "texturepacker" "TexturePackerGUI" (className =? "TexturePacker") nonFloating ,
-     NS "rube" "rube.sh" (className =? "Rube.bin") nonFloating ,
+     NS "rube" "rube" (className =? "Rube.bin") nonFloating ,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "blender" "~/thirdparty/blender/blender" (className =? "Blender") nonFloating,
      NS "particleeditor" "~/bin/particleeditor.sh" (title =? "Particle Editor") nonFloating,
@@ -96,7 +94,7 @@ scratchpads = [
      NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
      NS "conky" "conky -c ${HOME}/.conkyrc -q" (className =? "Conky") doFloat ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
-     NS "physed" "physed.sh" (title =? "Physics Body Editor") nonFloating ,
+--     NS "physed" "physed.sh" (title =? "Physics Body Editor") nonFloating , 
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
      NS "firefox" "firefox" (className =? "Iceweasel") nonFloating ,
      NS "torbrowser" "torbrowser-launcher" (className =? "Tor Browser") nonFloating ,
@@ -109,7 +107,7 @@ scratchpads = [
      NS "tiled" "tiled" (className =? "Tiled") nonFloating,
      NS "wireshark" "wireshark" (className =? "Wireshark") nonFloating ,
      NS "pavucontrol" "pavucontrol" (title =? "Volume Control") nonFloating ,
-     NS "acroread" "acroread" (className =? "Acroread-en") nonFloating ,
+     NS "aftershotpro" "aftershotpro" (className =? "AfterShot 2") nonFloating ,
      NS "sfxr" "sfxr" (className =? "sfxr") nonFloating ,
      NS "audacity" "audacity" (className =? "Audacity") nonFloating ,
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
@@ -136,10 +134,10 @@ myKeys= [
              ,("M-g",  S.promptSearchBrowser greenXPConfig "firefox" S.google)
              ,("M-c",  kill)
              ,("M-<F1>", AL.launchApp def "urxvt -e info " )
-             ,("M-S-a",namedScratchpadAction scratchpads "acroread")
+             ,("M-S-a",namedScratchpadAction scratchpads "aftershotpro")
              ,("M-S-b",namedScratchpadAction scratchpads "blender")
              ,("M-S-c",namedScratchpadAction scratchpads "chrome")
-             ,("M-S-d",namedScratchpadAction scratchpads "physed")
+--              ,("M-S-d",namedScratchpadAction scratchpads "physed")
              ,("M-S-e",namedScratchpadAction scratchpads "emacs")
              -- ,("M-S-f",namedScratchpadAction scratchpads "firefox")
              ,("M-S-f",namedScratchpadAction scratchpads "chrome")
