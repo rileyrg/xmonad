@@ -58,8 +58,11 @@ myManageHook =  composeAll . concat $
                                ,[fmap(f `isPrefixOf`) resource --> doCenterFloat   | f <- myFloats]
                                ,[
                                  className =? "SpiderOak"  --> doShift "2:Gimp"
+                               , className =? "AfterShot 3"  --> doShift "2:Gimp"
+                               , className =? "dvd"  --> doShift "2:Gimp"
                                , className =? "Gimp"  --> doShift "2:Gimp"
                                , className =? "Blender"  --> doShift "3:IDE"
+                               , className =? "QtCreator"  --> doShift "3:IDE"
                                , className =? "Android SDK Manager"  --> doShift "2:General"
                                , className =? "jetbrains-idea-ce"  --> doShift "3:IDE"
                                , className =? "Eclipse"  --> doShift "3:IDE" 
@@ -91,7 +94,8 @@ scratchpads = [
      NS "blender" "~/thirdparty/blender/blender" (className =? "Blender") nonFloating,
      NS "particleeditor" "~/bin/particleeditor.sh" (title =? "Particle Editor") nonFloating,
      NS "groovyconsole" "groovyConsole" (className =? "org-codehaus-groovy-tools-GroovyStarter") nonFloating,
-     NS "chrome" "google-chrome --new-window" (className =? "Google-chrome") nonFloating ,
+     NS "chrome" "google-chrome --new-window" (className =? "google-chrome") nonFloating ,
+     NS "qtcreator" "qtcreator" (className =? "QtCreator") nonFloating ,
      NS "conky" "conky -c ${HOME}/.conkyrc -q" (className =? "Conky") doFloat ,
      NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
 --     NS "physed" "physed.sh" (title =? "Physics Body Editor") nonFloating , 
@@ -104,11 +108,14 @@ scratchpads = [
      NS "filemanager" "pcmanfm" (className =?"Pcmanfm") nonFloating,
      NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") nonFloating ,
      NS "terminal" "mytoggleterm" (appName =? "terminal") nonFloating,
+     NS "pdf" "acroread" (className =? "Acroread-en") nonFloating,
      NS "tiled" "tiled" (className =? "Tiled") nonFloating,
+     NS "unison" "unison" (title =? "Unison") nonFloating,
      NS "wireshark" "wireshark" (className =? "Wireshark") nonFloating ,
      NS "pavucontrol" "pavucontrol" (title =? "Volume Control") nonFloating ,
-     NS "aftershotpro" "aftershotpro" (className =? "AfterShot 2") nonFloating ,
-     NS "sfxr" "sfxr" (className =? "sfxr") nonFloating ,
+     NS "aftershotpro" "AfterShot3X64" (className =? "AfterShot Pro 3") nonFloating ,
+     NS "dvd" "smplayer" (className =? "smplayer") nonFloating ,
+     NS "xfe" "xfe" (className =? "Xfe") nonFloating ,
      NS "audacity" "audacity" (className =? "Audacity") nonFloating ,
      NS "xfce4-appfinder" "xfce4-appfinder" (className =? "Xfce4-appfinder") nonFloating
  ]
@@ -136,20 +143,21 @@ myKeys= [
              ,("M-<F1>", AL.launchApp def "urxvt -e info " )
              ,("M-S-a",namedScratchpadAction scratchpads "aftershotpro")
              ,("M-S-b",namedScratchpadAction scratchpads "blender")
-             ,("M-S-c",namedScratchpadAction scratchpads "chrome")
---              ,("M-S-d",namedScratchpadAction scratchpads "physed")
+             ,("M-S-d",namedScratchpadAction scratchpads "dvd")
              ,("M-S-e",namedScratchpadAction scratchpads "emacs")
              -- ,("M-S-f",namedScratchpadAction scratchpads "firefox")
              ,("M-S-f",namedScratchpadAction scratchpads "chrome")
              ,("M-S-g",namedScratchpadAction scratchpads "gimp")
              ,("M-S-i",namedScratchpadAction scratchpads "intellij")
              ,("M-S-k",namedScratchpadAction scratchpads "inkscape")
-             ,("M-S-r",namedScratchpadAction scratchpads "9patchresizer")
+             ,("M-S-r",namedScratchpadAction scratchpads "pdf")
+             ,("M-S-s",namedScratchpadAction scratchpads "unison")
              ,("M-S-p",namedScratchpadAction scratchpads "texturepacker")
+             ,("M-S-q",namedScratchpadAction scratchpads "qtcreator")
              ,("M-S-t",namedScratchpadAction scratchpads "tiled")
              ,("M-S-u",namedScratchpadAction scratchpads "rube")
              ,("M-S-w",namedScratchpadAction scratchpads "wireshark")
-             ,("M-S-x",namedScratchpadAction scratchpads "sfxr")
+             ,("M-S-x",namedScratchpadAction scratchpads "xfe")
              ,("M-S-y",namedScratchpadAction scratchpads "audacity")
 
              -- sys type apps
