@@ -89,18 +89,19 @@ scratchpads :: [NamedScratchpad]
 scratchpads = [
      NS "9patchresizer" "9patchresizer.sh" (className =?"9Patch Resizer") nonFloating,
      NS "texturepacker" "TexturePackerGUI" (className =? "TexturePacker") nonFloating ,
+     NS "phpstorm" "phpstorm" (className =? "jetbrains-phpstorm") nonFloating ,
      NS "rube" "rube" (className =? "Rube.bin") nonFloating ,
      NS "androidemulator" "emulator -avd default" (className =?"emulator64-arm") nonFloating,
      NS "blender" "~/thirdparty/blender/blender" (className =? "Blender") nonFloating,
      NS "particleeditor" "~/bin/particleeditor.sh" (title =? "Particle Editor") nonFloating,
      NS "groovyconsole" "groovyConsole" (className =? "org-codehaus-groovy-tools-GroovyStarter") nonFloating,
-     NS "chrome" "google-chrome --new-window" (className =? "google-chrome") nonFloating ,
+     NS "chrome" "google-chrome --new-window" (className =? "Google-chrome-unstable") nonFloating ,
      NS "qtcreator" "qtcreator" (className =? "QtCreator") nonFloating ,
      NS "conky" "conky -c ${HOME}/.conkyrc -q" (className =? "Conky") doFloat ,
-     NS "emacs" "edit -c" (className =? "Emacs") nonFloating,
+     NS "emacs" "myemacsclient" (className =? "Emacs") nonFloating,
 --     NS "physed" "physed.sh" (title =? "Physics Body Editor") nonFloating , 
      NS "gimp" "gimp" (className =? "Gimp") nonFloating ,
-     NS "firefox" "firefox" (className =? "Iceweasel") nonFloating ,
+     NS "firefox" "firefox" (className =? "Firefox-esr") nonFloating ,
      NS "torbrowser" "torbrowser-launcher" (className =? "Tor Browser") nonFloating ,
      NS "htop" "urxvt -name htop -title htop -e htop" (title =? "htop") nonFloating,
      NS "inkscape" "inkscape" (className =?"Inkscape") nonFloating,
@@ -152,7 +153,7 @@ myKeys= [
              ,("M-S-k",namedScratchpadAction scratchpads "inkscape")
              ,("M-S-r",namedScratchpadAction scratchpads "pdf")
              ,("M-S-s",namedScratchpadAction scratchpads "unison")
-             ,("M-S-p",namedScratchpadAction scratchpads "texturepacker")
+             ,("M-S-p",namedScratchpadAction scratchpads "phpstorm")
              ,("M-S-q",namedScratchpadAction scratchpads "qtcreator")
              ,("M-S-t",namedScratchpadAction scratchpads "tiled")
              ,("M-S-u",namedScratchpadAction scratchpads "rube")
@@ -199,10 +200,10 @@ myKeys= [
              ,("M-S-<Delete>", kill)
              ,("M-C-l", spawn "xscreensaver-command -l")
              -- Quit xmonad
-             ,("M-C-z", spawn "confirmtoquit --suspend")
-             ,("M-C-d", spawn "confirmtoquit --shutdown")
+             ,("M-C-z", spawn "confirmtoquit.sh --suspend")
+             ,("M-C-d", spawn "confirmtoquit.sh --shutdown")
              ,("M-C-q", io exitSuccess)
-             ,("M-C-r", spawn "confirmtoquit --restart")
+             ,("M-C-r", spawn "confirmtoquit.sh --restart")
              ]
 
 
